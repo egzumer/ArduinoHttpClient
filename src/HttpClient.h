@@ -43,7 +43,6 @@ class HttpClient : public Client
 public:
     static const int kNoContentLengthHeader =-1;
     static const int kHttpPort =80;
-    static const char* kUserAgent;
 
 // FIXME Write longer API request, using port and user-agent, example
 // FIXME Update tempToPachube example to calculate Content-Length correctly
@@ -51,6 +50,8 @@ public:
     HttpClient(Client& aClient, const char* aServerName, uint16_t aServerPort = kHttpPort);
     HttpClient(Client& aClient, const String& aServerName, uint16_t aServerPort = kHttpPort);
     HttpClient(Client& aClient, const IPAddress& aServerAddress, uint16_t aServerPort = kHttpPort);
+
+    void setUserAgent(const String& userAgent);
 
     /** Start a more complex request.
         Use this when you need to send additional headers in the request,
@@ -387,6 +388,7 @@ protected:
     bool iConnectionClose;
     bool iSendDefaultRequestHeaders;
     String iHeaderLine;
+    String iUserAgent = "Arduino/2.2.0";
 };
 
 #endif

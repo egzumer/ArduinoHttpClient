@@ -6,7 +6,6 @@
 #include "b64.h"
 
 // Initialize constants
-const char* HttpClient::kUserAgent = "Arduino/2.2.0";
 const char* HttpClient::kContentLengthPrefix = HTTP_HEADER_CONTENT_LENGTH ": ";
 const char* HttpClient::kTransferEncodingChunked = HTTP_HEADER_TRANSFER_ENCODING ": " HTTP_HEADER_VALUE_CHUNKED;
 
@@ -27,6 +26,11 @@ HttpClient::HttpClient(Client& aClient, const IPAddress& aServerAddress, uint16_
    iConnectionClose(true), iSendDefaultRequestHeaders(true)
 {
   resetState();
+}
+
+void HttpClient::setUserAgent(const String &userAgent)
+{
+    iUserAgent = userAgent;
 }
 
 void HttpClient::resetState()
@@ -169,7 +173,7 @@ int HttpClient::sendInitialHeaders(const char* aURLPath, const char* aHttpMethod
             iClient->println();
         }
         // And user-agent string
-        sendHeader(HTTP_HEADER_USER_AGENT, kUserAgent);
+        sendHeader(HTTP_HEADER_USER_AGENT, iUserAgent);
     }
 
     if (iConnectionClose)
